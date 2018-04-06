@@ -1,0 +1,15 @@
+https://github.com/sowapplication/ReportingApplication
+
+username:- sowapplication
+email:- sujimala94@gmail.com
+password:- SOWapplication94
+
+
+/bix/DOM/mamallan/software/
+CodeIgniter-3.1.8.zip
+
+https://www.c-sharpcorner.com/UploadFile/145c93/crud-operation-using-ajax-part-1/
+
+https://codewithawa.com/posts/php-crud-create,-edit,-update-and-delete-posts-with-mysql-database
+
+https://www.codexworld.com/php-crud-operations-jquery-ajax-mysql/
