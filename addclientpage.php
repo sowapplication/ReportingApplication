@@ -40,16 +40,8 @@
  {
      $whereConstraint = "";
      $whereConstraint = " AND clientId = '".$_POST['clientId']."' ";
-     $returnJson =	null;
-     $clientListArray =	array();
-     $returnJson = $clientObj->getClientList($mysqli,$whereConstraint);
-     $clientListArray = json_decode($returnJson,true);
-     if (sizeof($clientListArray)>0) {
-         $txtClientNameValue = $clientListArray[0]['clientName'];
-         $txtClientLNameValue = $clientListArray[0]['clientLegalName'];
-         $txtClientIdValue = $clientListArray[0]['clientId'];
-     }
-     include("addclient.php");
+     print "whereConstraint....." .$whereConstraint."<br>";
+     $clientObj->removeClient($mysqli,$whereConstraint);
      die;
  }
  include("include/header.php");
@@ -83,13 +75,15 @@ $txtClientIdValue = 0;
 <?php 
  include("include/footer.php");
 ?>
+
 <style>
 .requiredClass {
 	border:1px solid #F00!important;
 }
 </style>
+
 <script>
-function cList() {
+/* function cList() {
 	$.ajax({
 		method: "POST",
 		url: "",
@@ -98,10 +92,16 @@ function cList() {
 	.done(function( data ) {
 			$("#clientListDivision").html(data);
 	  });				
-}
+} */
 function clientList() {
-	$("#clientListDivision").html("<center><img src='/sow/ReportingApplication/img/loading.gif' width='100' height='100'></center>");
-	setTimeout(cList, 500)
+	$.ajax({
+		method: "POST",
+		url: "",
+		data: "txtAction=clientlist",
+	})
+	.done(function( data ) {
+			$("#clientListDivision").html(data);
+	  });		
 }
 function editClient(clientId) {
 	$.ajax({
@@ -111,7 +111,7 @@ function editClient(clientId) {
 	})
 	.done(function( data ) {
 			$("#addClientDivision").html(data);
-	  });				
+	  });
 }
 function removeClient(clientId) {
 	$.ajax({
@@ -120,43 +120,55 @@ function removeClient(clientId) {
 		data: "txtAction=removeClient&clientId="+clientId,
 	})
 	.done(function( data ) {
-			$("#addClientDivision").html(data);
-	  });				
+		clientList();
+  });  
 }
 function allnumeric(inputtxt)
-   {
-      var numbers = /^[0-9]+$/;
-      if(inputtxt.match(numbers))
-      {
-      return true;
-      }
-      else
-      {
-      return false;
-      }
-   } 
-function clientValidation() {
+{
+  var numbers = /^[0-9]+$/;
+  if(inputtxt.match(numbers))
+  {
+ 	 return true;
+  }
+  else
+  {
+  	return false;
+  }
+} 
+function clientValidation() 
+{
 	var clientName = $("#txtClientName").val();
 	var clientLName = $("#txtClientLegalName").val();
 	var isCheck = 1;
-	if (clientName=="") {
+	
+	if (clientName=="") 
+	{
 		// alert("Enter Client Name");
 		$("#txtClientName").addClass("requiredClass");
 		isCheck = 0;
-	} else {
-		// if (allnumeric(clientName)) {
-			$("#txtClientName").removeClass("requiredClass");
-		// } else {
-			// $("#txtClientName").addClass("requiredClass");
-			// isCheck = 0;
-		// }
 	}
-	if (clientLName=="") {
-		// alert("Enter Client Legal Name");
+	else 
+	{
+		if (!allnumeric(clientName)) {
+			$("#txtClientName").removeClass("requiredClass");
+		} else {
+			$("#txtClientName").addClass("requiredClass");
+			isCheck = 2;
+		}
+	}
+	if (clientLName=="") 
+	{
 		$("#txtClientLegalName").addClass("requiredClass");
 		isCheck = 0;
-	} else {
-		$("#txtClientLegalName").removeClass("requiredClass");
+	}
+	else 
+	{
+		if (!allnumeric(clientLName)) {
+			$("#txtClientLegalName").removeClass("requiredClass");
+		} else {
+			$("#txtClientLegalName").addClass("requiredClass");
+			isCheck = 2;
+		}
 	}
 	return isCheck;
 }
@@ -186,8 +198,13 @@ $(document).ready(function(){
 				  });				
 			// event.preventDefault(); 
 			$("#clientForm").attr("action", "javascript:;" );
-		} else {
+		} else if (returnNoError==0){
 			alert("Please enter all values");
+			return false;
+		}
+		else
+		{
+			alert("Your Name is not valid. Please Avoid including numbers.");
 			return false;
 		}
 	});
