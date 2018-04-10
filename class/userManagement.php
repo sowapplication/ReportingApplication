@@ -1,58 +1,55 @@
 <?php
+//client management class
 class userManage
 {
-    public function addUser($mysqli)
+    public function addEditUser($mysqli)
     {
         $txtUserName 		= $_POST['txtUserName'];
-        $txtUserEmailId     = $_POST['txtUserEmailId'];
-        $txtUserRole        = $_POST['txtUserRole'];
-        $isActive			= 1;
+        $txtUserEmail       = $_POST['txtUserEmail'];
+        $txtUserRole 		= $_POST['txtUserRole'];
+        $txtUserId 		    = $_POST['txtUserId'];
+        $txtUserStatus 		= $_POST['txtUserStatus'];
         
-        if(isset($_POST['txtAction']) && (isset($_POST['txtAction'])!="")){
-            $qry = "update userMaster set userName='".$txtUserName."',userEmail='".$txtUserEmailId."',userRole='".$txtUserRole."' where USERID=".$_POST['txtAction'];
-            echo $qry;
-        }else{
-            $qry = "INSERT INTO userMaster(userName,userEmail,userRole,isActive) VALUES ('".$txtUserName."','".$txtUserEmailId."','".$txtUserRole."','".$isActive."');";
+        if ($txtUserId == 0)
+        {
+            $qry = "INSERT INTO users (name,email,role,status,created) VALUES ('".$txtUserName."','".$txtUserEmail."','".$txtUserRole."','".$txtUserStatus."',now());";
+        }
+        else if ($txtUserId>0)
+        {
+            $qry = "UPDATE users SET name = '".$txtUserName."',email = '".$txtUserEmail."',role = '".$txtUserRole."',status = '".$txtUserStatus."',modified=now() WHERE id = '".$txtUserId."' ";
         }
         $mysqli->query($qry);
     }
-    public function editUser($mysqli,$whereConstraint)
+    public function removeUser($mysqli,$whereConstraint)
     {
-        $txtUserName 		= $_POST['txtUserName'];
-        $txtUserEmailId     = $_POST['txtUserEmailId'];
-        $txtUserRole        = $_POST['txtUserRole'];
-        $isActive			= 1;
-        $qry = "update userMaster set userName='".$txtUserName."',userEmail='".$txtUserEmailId."',userRole='".$txtUserRole."' where 1 ";
-        if ($whereConstraint != "") {
+        $qry = "delete from users where 1 ";
+        
+        if ($whereConstraint!= "") {
             $qry .= $whereConstraint;
         }
         $mysqli->query($qry);
     }
     public function getUserList($mysqli,$whereConstraint)
     {
-        
-        $qry = "SELECT * FROM userMaster ";
-        if ($whereConstraint!= "") 
-        {
-            
-            $qry .= "WHERE USERID = ". $whereConstraint;
+        $qry = "SELECT * FROM users WHERE 1 ";
+        if ($whereConstraint!= "") {
+            $qry .= $whereConstraint;
         }
-       
+        // print $qry;
         $resultSet = array();
         $itr= 0;
         $res = $mysqli->query($qry);
-        while ($row = $res->fetch_object()) 
-        {
-            $resultSet[$itr]['userId']			    = $row->userId;
-            $resultSet[$itr]['userName']			= $row->userName;
-            $resultSet[$itr]['userEmail']		    = $row->userEmail;
-            $resultSet[$itr]['userRole']			= $row->userRole;
-            $resultSet[$itr]['isActive']			= $row->isActive;
+        // if ($mysqli->affected_rows>0) {
+        while ($row = $res->fetch_object()) {
+            $resultSet[$itr]['id']			= $row->id;
+            $resultSet[$itr]['name']			= $row->name;
+            $resultSet[$itr]['email']			= $row->email;
+            $resultSet[$itr]['role']		    = $row->role;
+            $resultSet[$itr]['status']			= $row->status;
             $itr++;
         }
+        // }
         $returnJson = json_encode($resultSet);
-        //print_r($returnJson);
         return $returnJson;
     }
-    
 }

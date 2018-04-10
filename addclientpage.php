@@ -4,6 +4,9 @@
  $clientObj = new clientManage;
  if (isset($_POST['txtAction']) && $_POST['txtAction']=="addClient") 
  {
+     
+    $clientObj->getClientList($mysqli,$whereConstraint);
+     
 	$clientObj->addEditClient($mysqli);
 	die;
  }
@@ -40,7 +43,6 @@
  {
      $whereConstraint = "";
      $whereConstraint = " AND clientId = '".$_POST['clientId']."' ";
-     print "whereConstraint....." .$whereConstraint."<br>";
      $clientObj->removeClient($mysqli,$whereConstraint);
      die;
  }
@@ -134,7 +136,7 @@ function allnumeric(inputtxt)
   {
   	return false;
   }
-} 
+}
 function clientValidation() 
 {
 	var clientName = $("#txtClientName").val();
@@ -204,7 +206,7 @@ $(document).ready(function(){
 		}
 		else
 		{
-			alert("Your Name is not valid. Please Avoid including numbers.");
+			alert("Your Name is not valid. Name should not include numbers.");
 			return false;
 		}
 	});

@@ -8,23 +8,25 @@ class clientManage
 		$txtClientLegalName = $_POST['txtClientLegalName'];
 		$txtClientId 		= $_POST['txtClientId'];
 		$isActive			= 1;
-		$userId				= 1;	
-		if ($txtClientId==0) {
+		$userId				= 1;
+		
+		if ($txtClientId==0) 
+		{
 			$qry = "INSERT INTO clientMaster (clientName,clientLegalName,isActive,userId) VALUES ('".$txtClientName."','".$txtClientLegalName."','".$isActive."','".$userId."');";
-		} else if ($txtClientId>0) {
+		}
+		else if ($txtClientId>0) 
+		{
 			$qry = "UPDATE clientMaster SET clientName = '".$txtClientName."',clientLegalName = '".$txtClientLegalName."' WHERE clientId = '".$txtClientId."' ";
 		}
 		$mysqli->query($qry);
 	}
-	public function removeClient($mysqli)
-	{
-	    $txtClientName 		= $_POST['txtClientName'];
-	    $txtClientLegalName = $_POST['txtClientLegalName'];
-	    $txtClientId 		= $_POST['txtClientId'];
-	    $isActive			= 1;
-	    $userId				= 1;
+	public function removeClient($mysqli,$whereConstraint)
+	{	    
+	    $qry = "delete from clientMaster where 1 ";
 	    
-	    $qry = "delete from clientMaster where clientId = '".$txtClientId."'";
+	    if ($whereConstraint!= "") {
+	        $qry .= $whereConstraint;
+	    }
 	    $mysqli->query($qry);
 	}
 	public function getClientList($mysqli,$whereConstraint) 

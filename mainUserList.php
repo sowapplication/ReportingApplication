@@ -11,6 +11,7 @@
       <th>User Name</th>
       <th>User Email</th>
       <th>User Role</th>
+      <th>User Status</th>
       <th>Manage</th>
     </tr>
     </thead>
@@ -21,12 +22,13 @@
 			foreach($userListArray as $key => $value) {
 	?>
     <tr>
-      <td><?php print $value['userName']; ?></td>
-      <td><?php print $value['userEmail']; ?></td>
-      <td><?php print $value['userRole']; ?></td>
-		<td><a class="user-edit" data="<?php echo  $value['userId'];?>" href="#">Edit</a>
+      <td><?php print $value['name']; ?></td>
+      <td><?php print $value['email']; ?></td>
+      <td><?php print $value['role']; ?></td>
+      <td><?php print $value['status']; ?></td>
+    	<td><a href="javascript:;" onClick='editUser("<?php print $value['id']; ?>");'>Edit</a>
 		&nbsp;&nbsp;|&nbsp;&nbsp;
-		<a href="#">Remove</a>
+		<a href="javascript:;" onClick='removeUser("<?php print $value['id']; ?>");'>Remove</a>
 		</td>
 	</tr>
 	<?php 
