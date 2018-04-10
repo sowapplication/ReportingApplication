@@ -6,30 +6,22 @@
  * @url       http://www.codexworld.com
  * @license   http://www.codexworld.com/license
  */
-class DB
-{
+class DB{
     private $dbHost     = "localhost";
     private $dbUsername = "root";
     private $dbPassword = "root";
     private $dbName     = "sowapplication";
     
-    public function __construct()
-    {
-     
-//         if(!$this->db)
-//         {
-           
+    public function __construct(){
+        if(!$this->db){
             // Connect to the database
             $conn = new mysqli($this->dbHost, $this->dbUsername, $this->dbPassword, $this->dbName);
-            if($conn->connect_error)
-            {
+            if($conn->connect_error){
                 die("Failed to connect with MySQL: " . $conn->connect_error);
-            }
-            else
-            {
+            }else{
                 $this->db = $conn;
             }
-//         }
+        }
     }
     
     /*
@@ -41,8 +33,6 @@ class DB
         $sql = 'SELECT ';
         $sql .= array_key_exists("select",$conditions)?$conditions['select']:'*';
         $sql .= ' FROM '.$table;
-        
-        
         if(array_key_exists("where",$conditions)){
             $sql .= ' WHERE ';
             $i = 0;
@@ -62,16 +52,13 @@ class DB
         }elseif(!array_key_exists("start",$conditions) && array_key_exists("limit",$conditions)){
             $sql .= ' LIMIT '.$conditions['limit'];
         }
+        
         $result = $this->db->query($sql);
         
-        $conditions['return_type']="single";
-        
-        if(array_key_exists("return_type",$conditions) && $conditions['return_type'] != 'all')
-        {
-            
+        if(array_key_exists("return_type",$conditions) && $conditions['return_type'] != 'all'){
             switch($conditions['return_type']){
                 case 'count':
-                    $data = $result->mysql_num_rows;
+                    $data = $result->num_rows;
                     break;
                 case 'single':
                     $data = $result->fetch_assoc();
@@ -80,7 +67,7 @@ class DB
                     $data = '';
             }
         }else{
-            if($result->mysql_num_rows > 0){
+            if($result->num_rows > 0){
                 while($row = $result->fetch_assoc()){
                     $data[] = $row;
                 }

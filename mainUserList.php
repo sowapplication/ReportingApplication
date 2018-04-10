@@ -24,7 +24,7 @@
       <td><?php print $value['userName']; ?></td>
       <td><?php print $value['userEmail']; ?></td>
       <td><?php print $value['userRole']; ?></td>
-		<td><a href="#">Edit</a>
+		<td><a class="user-edit" data="<?php echo  $value['userId'];?>" href="#">Edit</a>
 		&nbsp;&nbsp;|&nbsp;&nbsp;
 		<a href="#">Remove</a>
 		</td>

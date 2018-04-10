@@ -1,58 +1,51 @@
 <?php
-include 'codexWorld_DB.php';
+include 'DB.php';
 $db = new DB();
-$tblName = 'usermaster';
+$tblName = 'users';
 if(isset($_POST['action_type']) && !empty($_POST['action_type'])){
     if($_POST['action_type'] == 'data'){
         $conditions['where'] = array('id'=>$_POST['id']);
         $conditions['return_type'] = 'single';
-      
         $user = $db->getRows($tblName,$conditions);
         echo json_encode($user);
-    }
-    elseif($_POST['action_type'] == 'view'){
+    }elseif($_POST['action_type'] == 'view'){
         $users = $db->getRows($tblName,array('order_by'=>'id DESC'));
         if(!empty($users)){
             $count = 0;
             foreach($users as $user): $count++;
             echo '<tr>';
             echo '<td>#'.$count.'</td>';
-            echo '<td>'.$user['userName'].'</td>';
-            echo '<td>'.$user['userEmail'].'</td>';
-            echo '<td>'.$user['userRole'].'</td>';
-            echo '<td>'.$user['isActive'].'</td>';
-            echo '<td><a href="javascript:void(0);" class="glyphicon glyphicon-edit" onclick="editUser(\''.$user['userId'].'\')"></a><a href="javascript:void(0);" class="glyphicon glyphicon-trash" onclick="return confirm(\'Are you sure to delete data?\')?userAction(\'delete\',\''.$user['userId'].'\'):false;"></a></td>';
+            echo '<td>'.$user['name'].'</td>';
+            echo '<td>'.$user['email'].'</td>';
+            echo '<td>'.$user['phone'].'</td>';
+            echo '<td><a href="javascript:void(0);" class="glyphicon glyphicon-edit" onclick="editUser(\''.$user['id'].'\')"></a><a href="javascript:void(0);" class="glyphicon glyphicon-trash" onclick="return confirm(\'Are you sure to delete data?\')?userAction(\'delete\',\''.$user['id'].'\'):false;"></a></td>';
             echo '</tr>';
             endforeach;
         }else{
             echo '<tr><td colspan="5">No user(s) found......</td></tr>';
         }
-    }
-    elseif($_POST['action_type'] == 'add'){
+    }elseif($_POST['action_type'] == 'add'){
         $userData = array(
-            'userName' => $_POST['userName'],
-            'userEmail' => $_POST['userEmail'],
-            'userRole' => $_POST['userRole']
+            'name' => $_POST['name'],
+            'email' => $_POST['email'],
+            'phone' => $_POST['phone']
         );
         $insert = $db->insert($tblName,$userData);
         echo $insert?'ok':'err';
-    }
-    elseif($_POST['action_type'] == 'edit'){
-        if(!empty($_POST['userId'])){
+    }elseif($_POST['action_type'] == 'edit'){
+        if(!empty($_POST['id'])){
             $userData = array(
-                'userName' => $_POST['userName'],
-                'userEmail' => $_POST['userEmail'],
-                'userRole' => $_POST['userRole'],
-                'isActive' => $_POST['isActive']
+                'name' => $_POST['name'],
+                'email' => $_POST['email'],
+                'phone' => $_POST['phone']
             );
-            $condition = array('userId' => $_POST['userId']);
+            $condition = array('id' => $_POST['id']);
             $update = $db->update($tblName,$userData,$condition);
             echo $update?'ok':'err';
         }
-    }
-    elseif($_POST['action_type'] == 'deleted'){
-        if(!empty($_POST['userId'])){
-            $condition = array('userId' => $_POST['userId']);
+    }elseif($_POST['action_type'] == 'delete'){
+        if(!empty($_POST['id'])){
+            $condition = array('id' => $_POST['id']);
             $delete = $db->delete($tblName,$condition);
             echo $delete?'ok':'err';
         }
