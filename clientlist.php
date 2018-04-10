@@ -1,7 +1,7 @@
 
 <div class="box box-primary">
 <div class="box-header with-border">
-  <h3 class="box-title">Our Client List for all clients</h3>
+  <h3 class="box-title">Our Client List</h3>
 </div>
 
 <div class="box-body">
@@ -22,9 +22,9 @@
     <tr>
       <td><?php print $value['clientName']; ?></td>
       <td><?php print $value['clientLegalName']; ?></td>
-		<td><a href="#">Edit</a>
+		<td><a href="javascript:;" onClick='editClient("<?php print $value['clientId']; ?>");'>Edit</a>
 		&nbsp;&nbsp;|&nbsp;&nbsp;
-		<a href="#">Remove</a>
+		<a href="javascript:;" onClick='removeClient("<?php print $value['clientId']; ?>");'>Remove</a>
 		</td>
 	</tr>
 	<?php 
