@@ -9,7 +9,7 @@
     <thead>
     <tr>
       <th>Client Name</th>
-      <th>Client Legal Name</th>
+      <th>Client LegalName</th>
       <th>Manage</th>
     </tr>
     </thead>

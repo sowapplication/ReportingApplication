@@ -1,4 +1,5 @@
-<?php 
+<?php
+//client management class
 class clientManage 
 {
 	public function addEditClient($mysqli) 

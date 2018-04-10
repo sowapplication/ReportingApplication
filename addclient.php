@@ -8,7 +8,7 @@
 <div class="box-header with-border">
   <h3 class="box-title">Add a new Client</h3>
 </div>
-<!-- /.box-header -->
+<!-- /.box-header1 -->
 <!-- form start -->
         <div class="form-group">
     		<label>CLIENT NAME</label>
